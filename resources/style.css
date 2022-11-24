@@ -1,0 +1,76 @@
+body {
+  background-color: white;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+  }
+}
+
+.data-label-mask {
+  fill: white;
+  fill-opacity: 0.7;
+}
+@media (prefers-color-scheme: dark) {
+  .data-label-mask {
+    fill: black;
+    fill-opacity: 0.7;
+  }
+}
+
+.data-label-text {
+  /* color provided programmatically in element attribute */
+  font-size: 5pt;
+}
+
+.data-line {
+  /* color provided programmatically in element attribute */
+  fill: none;
+  stroke-width: 1px;
+}
+
+.grid-label-text {
+  font-size: 4pt;
+}
+@media (prefers-color-scheme: dark) {
+  .grid-label-text {
+    fill: white;
+  }
+}
+
+.grid-label-text-midnight {
+  font-size: 5pt;
+}
+@media (prefers-color-scheme: dark) {
+  .grid-label-text-midnight {
+    fill: white;
+  }
+}
+
+.grid-line {
+  stroke: lightgray;
+  stroke-width: 0.2px;
+}
+@media (prefers-color-scheme: dark) {
+  .grid-line {
+    stroke: darkgray;
+  }
+}
+
+.grid-line-vert-midnight {
+  stroke: lightgray;
+  stroke-width: 0.5px;
+}
+@media (prefers-color-scheme: dark) {
+  .grid-line-vert-midnight {
+    stroke: darkgray;
+  }
+}
+
+.chart-title {
+}
+@media (prefers-color-scheme: dark) {
+  .chart-title {
+    color: white;
+  }
+}
