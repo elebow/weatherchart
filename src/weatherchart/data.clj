@@ -4,38 +4,13 @@
   (:require [clj-http.client]))
 
 ; See https://weather-gov.github.io/api/gridpoints for explanation of each layer
-(def layers-to-show
-  ["updateTime"
-   "validTimes"
-   "snowfallAmount"
-   "windGust"
-   "minTemperature"
-   "windDirection"
-   "redFlagThreatIndex"
-   "iceAccumulation"
-   "dewpoint"
-   "temperature"
-   "hazards"
-   "snowLevel"
-   "pressure"
-   "relativeHumidity"
-   "dispersionIndex"
-   "skyCover"
-   "apparentTemperature"
-   "probabilityOfPrecipitation"
-   "quantitativePrecipitation"
-   "weather"
-   "windSpeed"])
 
 (def raw-json
   ;(slurp "gridpoints2.json")) ; DEBUG
   (:body (clj-http.client/get "https://api.weather.gov/gridpoints/PHI/45,77")))
 
-(def gridpoint-all-layers
-  ((json/read-str raw-json) "properties"))
-
 (def gridpoint-data
-  (select-keys gridpoint-all-layers layers-to-show))
+  ((json/read-str raw-json) "properties"))
 
 (defn raw-to-datapoints
   "Return a hashmap (TODO make it a record) containing the instant and value of the beginning and
