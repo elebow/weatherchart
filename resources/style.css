@@ -74,3 +74,20 @@ body {
     color: white;
   }
 }
+
+:root {
+  --color-temperature: purple;
+  --color-apparent-temperature: red;
+  --color-relative-humidity: green;
+  --color-probability-of-precipitation: blue;
+  --color-quantitative-precipitation: darkgreen;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-temperature: orchid;
+    --color-apparent-temperature: red;
+    --color-relative-humidity: green;
+    --color-probability-of-precipitation: deepskyblue;
+    --color-quantitative-precipitation: forestgreen;
+  }
+}

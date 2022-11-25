@@ -61,15 +61,15 @@
        points))
 
 (defn render-line-for-data
-  [range-min range-max points color]
-  (str "<polyline points='" (apply str (polyline-points range-min range-max points)) "' stroke='" color "' class='data-line' />"))
+  [range-min range-max points colorname]
+  (str "<polyline points='" (apply str (polyline-points range-min range-max points)) "' style='stroke:var(--color-" colorname ")' class='data-line' />"))
 
 (defn render-labels-for-data
-  [range-min range-max points color]
+  [range-min range-max points colorname]
   (apply str (map #(let [x (x-for-instant (:instant %))
                          y (y-label-offset (y-for-value range-min range-max (:value %)))]
                     (str "<rect x='" x " 'y='" (- y 5) "' width='5' height='5' stroke='none' class='data-label-mask' />"
-                         "<text x='" x "' y='" y "' fill='" color "' class='data-label-text'>" (int( :value %)) "</text>"))
+                         "<text x='" x "' y='" y "' style='fill:var(--color-" colorname ")' class='data-label-text'>" (int( :value %)) "</text>"))
             points)))
 
 (defn render-grid-horiz
@@ -101,9 +101,7 @@
         render-grid-vert-hours
         render-grid-vert-midnights
         (render-grid-horiz (:min range-limits) (:max range-limits) (range (:min range-limits) (+ 1 (:max range-limits)) (:step range-limits)))
-        (apply str (map #(seq [(render-line-for-data (:min range-limits) (:max range-limits) (:points %) (:color %))
-                              (render-labels-for-data (:min range-limits) (:max range-limits) (take-nth 2 (:points %)) (:color %))])
+        (apply str (map #(seq [(render-line-for-data (:min range-limits) (:max range-limits) (:points %) (:colorname %))
+                              (render-labels-for-data (:min range-limits) (:max range-limits) (take-nth 2 (:points %)) (:colorname %))])
                         data-series))
       "</svg>"))
-
-
