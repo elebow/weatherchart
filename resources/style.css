@@ -67,6 +67,16 @@ body {
   }
 }
 
+.current-datetime-marker {
+	stroke: black;
+  stroke-width: 0.2px;
+}
+@media (prefers-color-scheme: dark) {
+	.current-datetime-marker {
+		stroke: white;
+	}
+}
+
 .chart-title {
 }
 @media (prefers-color-scheme: dark) {
