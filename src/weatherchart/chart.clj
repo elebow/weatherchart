@@ -10,10 +10,7 @@
 (def midnights (map #(java-time.api/plus midnight-today (java-time.api/days %)) (range)))
 (defn seconds-until-instant
   [instant]
-  ;(java-time.api/as (java-time.api/duration (java-time.api/instant) instant) :seconds)); TODO should grid start at current time?
-  (java-time.api/as (java-time.api/duration (java-time.api/instant midnight-today) instant) :seconds)) ; TODO should grid start at most recent midnight?
-  ; TODO should grid start at earliest datapoint, which is often several hours old?
-  ;(java-time.api/as (java-time.api/duration (java-time.api/instant "2022-10-27T20:00:00Z") instant) :seconds)) ;DEBUG
+  (java-time.api/as (java-time.api/duration weatherchart.data/earliest-instant instant) :seconds))
 (def midnights-seconds
   (map #(hash-map :label (java-time.api/format "EEE Y-M-d" %)
                   :seconds (seconds-until-instant %))

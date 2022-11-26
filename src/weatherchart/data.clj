@@ -24,3 +24,6 @@
   [layer-name]
   (flatten (map #(raw-to-datapoints %)
                 (get-in gridpoint-data [layer-name "values"]))))
+
+(def earliest-instant
+  (:instant (first (points-for-layer "temperature"))))
