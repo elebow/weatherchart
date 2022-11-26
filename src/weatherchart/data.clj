@@ -13,17 +13,17 @@
   ((json/read-str raw-json) "properties"))
 
 (defn raw-to-datapoints
-  "Return a hashmap (TODO make it a record) containing the instant and value of the beginning and
+  "Return a hashmap (TODO make it a record) containing the datetime and value of the beginning and
   end of each datapoint."
   [raw-data]
   (def interval (java-time.api/interval (raw-data "validTime")))
-  [{:instant (java-time.interval/start interval) :value (raw-data "value")}
-   {:instant (java-time.interval/end interval) :value (raw-data "value")}])
+  [{:datetime (java-time.api/zoned-date-time (java-time.api/start interval) "UTC") :value (raw-data "value")}
+   {:datetime (java-time.api/zoned-date-time (java-time.api/end interval) "UTC") :value (raw-data "value")}])
 
 (defn points-for-layer
   [layer-name]
   (flatten (map #(raw-to-datapoints %)
                 (get-in gridpoint-data [layer-name "values"]))))
 
-(def earliest-instant
-  (:instant (first (points-for-layer "temperature"))))
+(def earliest-datetime
+  (:datetime (first (points-for-layer "temperature"))))

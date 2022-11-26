@@ -6,20 +6,11 @@
 
 ; TODO move these to a `time` module
 (def midnight-today (java-time.api/offset-date-time (java-time.api/year) (java-time.api/month) (java-time.api/day-of-month) 0 0 0 0))
-;(def midnight-today (java-time.api/zoned-date-time (java-time.api/year 2022) (java-time.api/month 10) (java-time.api/day-of-month 27) 0 0 0 0)) ; DEBUG
 (def midnights (map #(java-time.api/plus midnight-today (java-time.api/days %)) (range)))
-(defn seconds-until-instant
-  [instant]
-  (java-time.api/as (java-time.api/duration weatherchart.data/earliest-instant instant) :seconds))
-(def midnights-seconds
-  (map #(hash-map :label (java-time.api/format "EEE Y-M-d" %)
-                  :seconds (seconds-until-instant %))
-       midnights))
-(def hours (map #(java-time.api/plus midnight-today (java-time.api/hours %)) (range)))
-(def hours-seconds
-  (map #(hash-map :label (java-time.api/format "H" %)
-                  :seconds (seconds-until-instant %))
-       hours))
+(defn seconds-until-datetime
+  [datetime]
+  (java-time.api/as (java-time.api/duration weatherchart.data/earliest-datetime datetime) :seconds))
+(def hours (map #(java-time.api/plus weatherchart.data/earliest-datetime (java-time.api/hours %)) (range)))
 
 (defn x-for-seconds
   "Returns the SVG x-coordinate for a given number of seconds from the current time."
@@ -27,10 +18,10 @@
   (+ (double (/ seconds time-scale-factor))
      chart-grid-margin-left))
 
-(defn x-for-instant
-  "Returns the SVG x-coordinate for a given `java.time.Instant`."
-  [instant]
-  (x-for-seconds (seconds-until-instant instant)))
+(defn x-for-datetime
+  "Returns the SVG x-coordinate for a given datetime."
+  [datetime]
+  (x-for-seconds (seconds-until-datetime datetime)))
 
 (defn y-in-scale
   "Scales a `y` in [`range-min`, `range-max`] to [0, `chart-height`]"
@@ -54,7 +45,7 @@
 (defn polyline-points
   "Returns `x,y` pair strings suitable for an SVG polyline, scaled and oriented correctly."
   [range-min range-max points]
-  (map #(str (x-for-instant (:instant %)) "," (y-for-value range-min range-max (:value %)) " ")
+  (map #(str (x-for-datetime (:datetime %)) "," (y-for-value range-min range-max (:value %)) " ")
        points))
 
 (defn render-line-for-data
@@ -63,7 +54,7 @@
 
 (defn render-labels-for-data
   [range-min range-max points colorname]
-  (apply str (map #(let [x (x-for-instant (:instant %))
+  (apply str (map #(let [x (x-for-datetime (:datetime %))
                          y (y-label-offset (y-for-value range-min range-max (:value %)))]
                     (str "<rect x='" x " 'y='" (- y 5) "' width='5' height='5' stroke='none' class='data-label-mask' />"
                          "<text x='" x "' y='" y "' style='fill:var(--color-" colorname ")' class='data-label-text'>" (int( :value %)) "</text>"))
@@ -78,19 +69,21 @@
 
 (def render-grid-vert-midnights
   (apply str (map
-              #(str "<text x='" (:x %) "' y='" (+ 14 chart-height)  "' class='grid-label-text-midnight'>" (:label %) "</text>"
-                    "<line x1='" (:x %) "' y1='0%' x2='" (:x %) "' y2='" (+ 8 chart-height) "' class='grid-line-vert-midnight' />")
-              (take 9 (map #(hash-map :x (x-for-seconds (:seconds %)) :label (:label %)) midnights-seconds)))))
+               #(let [x (x-for-datetime %)]
+                 (str "<text x='" x "' y='" (+ 14 chart-height)  "' class='grid-label-text-midnight'>" (java-time.api/format "EEE Y-M-d" %) "</text>"
+                     "<line x1='" x "' y1='0%' x2='" x "' y2='" (+ 8 chart-height) "' class='grid-line-vert-midnight' />"))
+              (take 9 midnights))))
 (def render-grid-vert-hours
   (apply str (map
-              #(str "<text x='" (:x %) "' y='" (+ 6 chart-height) "' class='grid-label-text'>" (:label %) "</text>"
-                    "<line x1='" (:x %) "' y1='0%' x2='" (:x %) "' y2='" (+ 3 chart-height) "' class='grid-line' />")
-              (take (* 9 24) (map #(hash-map :x (x-for-seconds (:seconds %)) :label (:label %)) hours-seconds)))))
+              #(let [ x (x-for-datetime %)]
+                (str "<text x='" x "' y='" (+ 6 chart-height) "' class='grid-label-text'>" (java-time.api/format "H" (java-time.api/with-zone-same-instant % "America/New_York")) "</text>"
+                     "<line x1='" x "' y1='0%' x2='" x "' y2='" (+ 3 chart-height) "' class='grid-line' />"))
+              (take (* 9 24) hours))))
 
 (defn chart-width
   [data]
   ; TODO take all data series and find the max last
-  (x-for-instant (:instant (last data))))
+  (x-for-datetime (:datetime (last data))))
 
 (defn render-chart
   [range-limits data-series]
