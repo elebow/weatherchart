@@ -14,7 +14,7 @@ body {
 @media (prefers-color-scheme: dark) {
   .data-label-mask {
     fill: black;
-    fill-opacity: 0.7;
+    fill-opacity: 0.6;
   }
 }
 
