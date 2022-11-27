@@ -67,14 +67,15 @@ body {
   }
 }
 
-.current-datetime-marker {
-	stroke: black;
-  stroke-width: 0.2px;
+.current-hour-highlight {
+  fill: black;
+  opacity: 10%;
 }
 @media (prefers-color-scheme: dark) {
-	.current-datetime-marker {
-		stroke: white;
-	}
+  .current-hour-highlight {
+    fill: white;
+    opacity: 20%;
+  }
 }
 
 .chart-title {

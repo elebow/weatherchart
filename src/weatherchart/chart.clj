@@ -79,11 +79,13 @@
                      "<line x1='" x "' y1='0%' x2='" x "' y2='" (+ 3 chart-height) "' class='grid-line' />"))
               (take (* 9 24) hours))))
 
-(def render-current-datetime-marker
-  (let [x (x-for-datetime (java-time.api/zoned-date-time))]
-   (str "<text x='" x "' y='" (+ 9 chart-height) "' class='grid-label-text'>now</text>"
-        "<line x1='" x "' y1='0%' x2='" x "' y2='" (+ 7 chart-height) "' class='current-datetime-marker' />")))
-(str render-current-datetime-marker)
+(def render-current-hour-highlight
+  (let [beginning-of-current-hour (java-time.api/truncate-to (java-time.api/offset-date-time) :hours)
+        end-of-current-hour (java-time.api/plus beginning-of-current-hour (java-time.api/hours 1))]
+       (str "<polygon points='" (x-for-datetime beginning-of-current-hour) ",0 "
+                                (x-for-datetime beginning-of-current-hour) "," chart-height " "
+                                (x-for-datetime end-of-current-hour) "," chart-height " "
+                                (x-for-datetime end-of-current-hour) ",0' class='current-hour-highlight' />")))
 
 (defn chart-width
   [data]
@@ -95,7 +97,7 @@
   (str "<svg viewBox='0 0 " (chart-width (:points (first data-series))) " " (+ 15 chart-height) "' height='400px' xmlns='http://www.w3.org/2000/svg'>"
         render-grid-vert-hours
         render-grid-vert-midnights
-        render-current-datetime-marker
+        render-current-hour-highlight
         (render-grid-horiz (:min range-limits) (:max range-limits) (range (:min range-limits) (+ 1 (:max range-limits)) (:step range-limits)))
         (apply str (map #(seq [(render-line-for-data (:min range-limits) (:max range-limits) (:points %) (:colorname %))
                               (render-labels-for-data (:min range-limits) (:max range-limits) (take-nth 2 (:points %)) (:colorname %))])
