@@ -4,7 +4,7 @@
 (def chart-height 50)
 (def time-scale-factor 500.0)
 
-(def midnight-today (java-time.api/offset-date-time (java-time.api/year) (java-time.api/month) (java-time.api/day-of-month) 0 0 0 0))
+(def midnight-today (java-time.api/truncate-to (java-time.api/offset-date-time) :days))
 (def midnights (map #(java-time.api/plus midnight-today (java-time.api/days %)) (range)))
 (defn seconds-until-datetime
   [datetime]
