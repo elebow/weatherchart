@@ -86,6 +86,25 @@ body {
   }
 }
 
+.weathercondition-marker {
+  stroke: black;
+  stroke-width: 0.5px;
+}
+@media (prefers-color-scheme: dark) {
+  .weathercondition-marker {
+    stroke: white;
+  }
+}
+
+.weathercondition-label {
+  font-size: 3pt;
+}
+@media (prefers-color-scheme: dark) {
+  .weathercondition-label {
+    fill: white;
+  }
+}
+
 :root {
   --color-temperature: purple;
   --color-apparent-temperature: red;

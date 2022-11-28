@@ -45,5 +45,19 @@
   (flatten (map #(raw-to-datapoints %)
                 (get-in gridpoint-data [layer-name "values"]))))
 
+; two irregular layers
+(def points-for-weather-layer
+  (->> (map #(let [interval (java-time.api/interval (% "validTime"))
+                  value (first (% "value"))] ; TODO does value ever have more than one element?
+             (hash-map :datetime-start (java-time.api/zoned-date-time (java-time.api/start interval) "UTC")
+                       :datetime-end (java-time.api/zoned-date-time (java-time.api/end interval) "UTC")
+                       :coverage (value "coverage")
+                       :weather (value "weather")
+                       :intensity (value "intensity")
+                       :attributes (value "attributes")))
+             (get-in gridpoint-data ["weather" "values"]))
+       (remove #(nil? (:weather %)))))
+(def points-for-hazards-layer [])
+
 (def earliest-datetime (:datetime (first (points-for-layer "temperature"))))
 (def latest-datetime (:datetime (last (points-for-layer "temperature"))))

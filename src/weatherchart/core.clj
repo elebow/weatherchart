@@ -1,6 +1,7 @@
 (ns weatherchart.core
   (:require weatherchart.data)
   (:require weatherchart.chart)
+  (:require weatherchart.weatherconditions)
   (:gen-class))
 
 ; See https://weather-gov.github.io/api/gridpoints for explanation of each layer
@@ -16,6 +17,8 @@
                 </head>
                 <body>"
                    (if weatherchart.data/from-storage-timestamp (str "Failed to fetch gridpoints. Using stored data from " weatherchart.data/from-storage-timestamp))
+                  "<h2 class='chart-title'>weather conditions and hazards</h2>"
+                  weatherchart.weatherconditions/render-elements
                   "<h2 class='chart-title'><span style='color:var(--color-temperature)'>temperature (°C)</span> and <span style='color:var(--color-apparent-temperature)'>apparent temperature (°C)</span></h2>"
                   (weatherchart.chart/render-chart {:min -10 :max 40 :step 10} [{:points (weatherchart.data/points-for-layer "temperature") :colorname "temperature"}
                                                                                 {:points (weatherchart.data/points-for-layer "apparentTemperature") :colorname "apparent-temperature"}])
@@ -35,6 +38,5 @@
    ;"snowfallAmount" (mm)
    ;"pressure"
    ;"skyCover" (%)
-   ;"weather" ; non-numeric
    ;"windSpeed" (km/h)
-   ;"hazards"
+   ;"hazards" ; non-numeric
