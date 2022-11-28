@@ -20,7 +20,6 @@
 
 (def fetched-data
   ;{:from-storage-timestamp (str (java-time.api/instant (.lastModified (clojure.java.io/file "gridpoints.json"))))
-  ;{:from-storage-timestamp false
   ; :json (slurp "gridpoints.json")}) ; DEBUG
   (let [response (clj-http.client/get "https://api.weather.gov/gridpoints/PHI/45,77" {:throw-exceptions false})]
     (if (clj-http.client/unexceptional-status? (:status response))
