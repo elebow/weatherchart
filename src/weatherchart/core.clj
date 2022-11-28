@@ -3,6 +3,8 @@
   (:require weatherchart.chart)
   (:gen-class))
 
+; See https://weather-gov.github.io/api/gridpoints for explanation of each layer
+
 (defn -main
   []
   (println (str

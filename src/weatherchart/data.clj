@@ -3,8 +3,6 @@
   (:require [java-time.api])
   (:require [clj-http.client]))
 
-; See https://weather-gov.github.io/api/gridpoints for explanation of each layer
-
 (def raw-json
   ;(slurp "gridpoints2.json")) ; DEBUG
   (:body (clj-http.client/get "https://api.weather.gov/gridpoints/PHI/45,77")))
