@@ -3,9 +3,26 @@
   (:require [java-time.api])
   (:require [clj-http.client]))
 
+
+(defn store-and-return-blob
+  "Store a blob on disk. Returns the blob."
+  [blob]
+  (do
+    (with-open [outfile (clojure.java.io/writer "file:/tmp/weatherchart-last-gridpoints.json")]
+      (.write outfile blob))
+    blob))
+
+(defn retrieve-stored-blob
+  "Retrieves a blob from disk." ; TODO add notice to output HTML if we resorted to this
+  []
+  (slurp "/tmp/weatherchart-last-gridpoints.json"))
+
 (def raw-json
-  ;(slurp "gridpoints2.json")) ; DEBUG
-  (:body (clj-http.client/get "https://api.weather.gov/gridpoints/PHI/45,77")))
+  ;(slurp "file:/gridpoints.json")) ; DEBUG
+  (let [response (clj-http.client/get "https://api.weather.gov/gridpoints/PHI/45,77" {:throw-exceptions false})]
+    (if (clj-http.client/unexceptional-status? (:status response))
+        (store-and-return-blob (:body response))
+        (retrieve-stored-blob))))
 
 (def gridpoint-data
   ((json/read-str raw-json) "properties"))
