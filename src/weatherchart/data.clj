@@ -10,22 +10,27 @@
   (do
     (with-open [outfile (clojure.java.io/writer "file:/tmp/weatherchart-last-gridpoints.json")]
       (.write outfile blob))
-    blob))
+    {:from-storage-timestamp false :json blob}))
 
 (defn retrieve-stored-blob
-  "Retrieves a blob from disk." ; TODO add notice to output HTML if we resorted to this
+  "Retrieves a blob from disk."
   []
-  (slurp "/tmp/weatherchart-last-gridpoints.json"))
+  {:from-storage-timestamp (str (java-time.api/instant (.lastModified (clojure.java.io/file "/tmp/weatherchart-last-gridpoints.json"))))
+   :json (slurp "/tmp/weatherchart-last-gridpoints.json")})
 
-(def raw-json
-  ;(slurp "file:/gridpoints.json")) ; DEBUG
+(def fetched-data
+  ;{:from-storage-timestamp (str (java-time.api/instant (.lastModified (clojure.java.io/file "gridpoints.json"))))
+  ;{:from-storage-timestamp false
+  ; :json (slurp "gridpoints.json")}) ; DEBUG
   (let [response (clj-http.client/get "https://api.weather.gov/gridpoints/PHI/45,77" {:throw-exceptions false})]
     (if (clj-http.client/unexceptional-status? (:status response))
         (store-and-return-blob (:body response))
         (retrieve-stored-blob))))
 
+(def from-storage-timestamp (:from-storage-timestamp fetched-data))
+
 (def gridpoint-data
-  ((json/read-str raw-json) "properties"))
+  ((json/read-str (:json fetched-data)) "properties"))
 
 (defn raw-to-datapoints
   "Return a hashmap (TODO make it a record) containing the datetime and value of the beginning and
