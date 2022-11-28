@@ -45,5 +45,5 @@
   (flatten (map #(raw-to-datapoints %)
                 (get-in gridpoint-data [layer-name "values"]))))
 
-(def earliest-datetime
-  (:datetime (first (points-for-layer "temperature"))))
+(def earliest-datetime (:datetime (first (points-for-layer "temperature"))))
+(def latest-datetime (:datetime (last (points-for-layer "temperature"))))

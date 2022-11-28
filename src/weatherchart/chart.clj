@@ -87,14 +87,9 @@
                                 (x-for-datetime end-of-current-hour) "," chart-height " "
                                 (x-for-datetime end-of-current-hour) ",0' class='current-hour-highlight' />")))
 
-(defn chart-width
-  [data]
-  ; TODO take all data series and find the max last
-  (x-for-datetime (:datetime (last data))))
-
 (defn render-chart
   [range-limits data-series]
-  (str "<svg viewBox='0 0 " (chart-width (:points (first data-series))) " " (+ 15 chart-height) "' height='400px' xmlns='http://www.w3.org/2000/svg'>"
+  (str "<svg viewBox='0 0 " (x-for-datetime weatherchart.data/latest-datetime) " " (+ 15 chart-height) "' height='400px' xmlns='http://www.w3.org/2000/svg'>"
         render-grid-vert-hours
         render-grid-vert-midnights
         render-current-hour-highlight
