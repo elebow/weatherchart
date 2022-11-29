@@ -6,12 +6,14 @@
 ; We use SVG to ease vertical alignment with the quantitative charts.
 
 (def render-weather-elements
-  (apply str (map #(let [x (weatherchart.chart/x-for-datetime (:datetime-start %))
-                         y-textorigin (- weatherchart.chart/chart-height 5)]
-                        (str "<line x1='" x "' y1='" (+ 2 y-textorigin) "' x2='" x "' y2='" weatherchart.chart/chart-height "' class='weathercondition-marker' />"
-                             "<text x='" x "' y='" y-textorigin "' transform='rotate(-40, " x ", " y-textorigin ")' class='weathercondition-label'>" (:intensity %) " " (:weather %) " " (:coverage %) "</text>"))
+  (apply str (map #(let [x1 (weatherchart.chart/x-for-datetime (:datetime-start %))
+                         x2 (weatherchart.chart/x-for-datetime (:datetime-end %))
+                         y-textorigin (- weatherchart.chart/chart-height 5)
+                         y-top (+ 2 y-textorigin)
+                         y-bottom weatherchart.chart/chart-height]
+                        (str "<polyline points='" x1 "," y-top " " x1 "," y-bottom " " x2 "," y-bottom " " x2 "," (- y-bottom 2) "' class='weathercondition-marker' />"
+                             "<text x='" x1 "' y='" y-textorigin "' transform='rotate(-40, " x1 ", " y-textorigin ")' class='weathercondition-label'>" (:intensity %) " " (:weather %) " " (:coverage %) "</text>"))
        weatherchart.data/points-for-weather-layer)))
-  ; TODO visually show :datetime-end,  and include :attributes
 
 (def render-elements
   (str "<svg viewBox='0 0 " (weatherchart.chart/x-for-datetime weatherchart.data/latest-datetime) " " (+ 15 weatherchart.chart/chart-height) "' height='400px' xmlns='http://www.w3.org/2000/svg'>"

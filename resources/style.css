@@ -91,6 +91,7 @@ body {
 .weathercondition-marker {
   stroke: black;
   stroke-width: 0.5px;
+  fill: none;
 }
 @media (prefers-color-scheme: dark) {
   .weathercondition-marker {
