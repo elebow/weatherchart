@@ -32,7 +32,7 @@
                   "<h2 class='chart-title' style='color:var(--color-probability-of-precipitation)'>probability of precipitation (%)</h2>"
                   (weatherchart.chart/render-chart {:min 0 :max 100 :step 10} [{:points (weatherchart.data/points-for-layer "probabilityOfPrecipitation") :colorname "probability-of-precipitation"}])
                   "<h2 class='chart-title' style='color:var(--color-quantitative-precipitation)'>rain amount (mm)</h2>"
-                  (weatherchart.chart/render-chart {:min 0 :max 20 :step 10} [{:points (weatherchart.data/points-for-layer "quantitativePrecipitation") :colorname "quantitative-precipitation"}])
+                  (weatherchart.chart/render-chart {:min 0 :max 50 :step 10} [{:points (weatherchart.data/points-for-layer "quantitativePrecipitation") :colorname "quantitative-precipitation"}])
 
                   ; Temporary display to aid development
                   "<br><br>debug:<br>weather attributes: "
