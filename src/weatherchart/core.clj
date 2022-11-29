@@ -11,6 +11,7 @@
   (println (str
              "<html>
                 <head>
+                  <title>weatherchart</title>
                   <style>"
                   (slurp (clojure.java.io/resource "style.css"))
                   "</style>
