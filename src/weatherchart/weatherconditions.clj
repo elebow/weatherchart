@@ -12,7 +12,6 @@
                              "<text x='" x "' y='" y-textorigin "' transform='rotate(-40, " x ", " y-textorigin ")' class='weathercondition-label'>" (:intensity %) " " (:weather %) " " (:coverage %) "</text>"))
        weatherchart.data/points-for-weather-layer)))
   ; TODO visually show :datetime-end,  and include :attributes
-(def hazard-points (weatherchart.data/points-for-layer "hazards"))
 
 (def render-elements
   (str "<svg viewBox='0 0 " (weatherchart.chart/x-for-datetime weatherchart.data/latest-datetime) " " (+ 15 weatherchart.chart/chart-height) "' height='400px' xmlns='http://www.w3.org/2000/svg'>"
