@@ -18,7 +18,10 @@
                   "</style>
                 </head>
                 <body>"
-                   (if weatherchart.data/from-storage-timestamp (str "Failed to fetch gridpoints. Using stored data from " weatherchart.data/from-storage-timestamp))
+                   (let [fetched-data weatherchart.data/fetched-data
+                         timestamp (:from-storage-timestamp fetched-data)
+                         error (:error fetched-data)]
+                        (if timestamp (str "Failed to fetch gridpoints. Using stored data from " timestamp " – " error)))
                   "<h2 class='chart-title'>weather conditions and hazards</h2>"
                   weatherchart.weatherconditions/render-elements
                   "<h2 class='chart-title'><span style='color:var(--color-temperature)'>temperature (°C)</span> and <span style='color:var(--color-apparent-temperature)'>apparent temperature (°C)</span></h2>"

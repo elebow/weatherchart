@@ -20,13 +20,14 @@
 
 (def fetched-data
   ;{:from-storage-timestamp (str (java-time.api/instant (.lastModified (clojure.java.io/file "gridpoints.json"))))
+  ; :error "400 some error"
   ; :json (slurp "gridpoints.json")}) ; DEBUG
   (let [response (clj-http.client/get "https://api.weather.gov/gridpoints/PHI/45,77" {:throw-exceptions false})]
     (if (clj-http.client/unexceptional-status? (:status response))
         (store-and-return-blob (:body response))
-        (retrieve-stored-blob))))
+        (assoc (retrieve-stored-blob) :error (str (:status response) " " (java.net.URLEncoder/encode (subs (:body response) 0 100)))))))
 
-(def from-storage-timestamp (:from-storage-timestamp fetched-data))
+;(def from-storage-timestamp (:from-storage-timestamp fetched-data))
 
 (def gridpoint-data
   ((json/read-str (:json fetched-data)) "properties"))
