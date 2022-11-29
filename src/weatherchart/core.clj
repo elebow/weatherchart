@@ -12,6 +12,7 @@
              "<html>
                 <head>
                   <title>weatherchart</title>
+                  <link rel='icon' href='https://weatherchart.eddielebow.com/favicon.ico' />
                   <style>"
                   (slurp (clojure.java.io/resource "style.css"))
                   "</style>
