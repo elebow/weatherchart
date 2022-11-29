@@ -18,5 +18,6 @@
   (str "<svg viewBox='0 0 " (weatherchart.chart/x-for-datetime weatherchart.data/latest-datetime) " " (+ 15 weatherchart.chart/chart-height) "' height='400px' xmlns='http://www.w3.org/2000/svg'>"
         weatherchart.chart/render-grid-vert-midnights
         weatherchart.chart/render-grid-vert-hours
+        weatherchart.chart/render-current-hour-highlight
         render-weather-elements
       "</svg>"))
