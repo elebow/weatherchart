@@ -1,6 +1,7 @@
 body {
   color: black;
   background-color: white;
+  min-width: 1200px;
 }
 @media (prefers-color-scheme: dark) {
   body {
