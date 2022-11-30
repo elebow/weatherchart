@@ -23,7 +23,7 @@ body {
 
 .data-label-text {
   /* color provided programmatically in element attribute */
-  font-size: 5pt;
+  font-size: 4pt;
 }
 
 .data-line {
@@ -33,7 +33,7 @@ body {
 }
 
 .grid-label-text {
-  font-size: 4pt;
+  font-size: 3pt;
 }
 @media (prefers-color-scheme: dark) {
   .grid-label-text {
@@ -42,7 +42,7 @@ body {
 }
 
 .grid-label-text-midnight {
-  font-size: 5pt;
+  font-size: 4pt;
 }
 @media (prefers-color-scheme: dark) {
   .grid-label-text-midnight {
@@ -101,7 +101,7 @@ body {
 }
 
 .weathercondition-label {
-  font-size: 3pt;
+  font-size: 2.5pt;
 }
 @media (prefers-color-scheme: dark) {
   .weathercondition-label {

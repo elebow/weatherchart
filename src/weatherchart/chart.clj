@@ -1,8 +1,8 @@
 (ns weatherchart.chart)
 
 (def chart-grid-margin-left 10)
-(def chart-height 50)
-(def time-scale-factor 500.0)
+(def chart-height 40)
+(def time-scale-factor 600.0)
 
 (def midnight-today (java-time.api/truncate-to (java-time.api/offset-date-time) :days))
 (def midnights (map #(java-time.api/plus midnight-today (java-time.api/days %)) (range)))
@@ -89,7 +89,7 @@
 
 (defn render-chart
   [range-limits data-series]
-  (str "<svg viewBox='0 0 " (x-for-datetime weatherchart.data/latest-datetime) " " (+ 15 chart-height) "' height='" (* 8 chart-height) "px' xmlns='http://www.w3.org/2000/svg'>"
+  (str "<svg viewBox='0 -1 " (x-for-datetime weatherchart.data/latest-datetime) " " (+ 8 chart-height) "' height='" (* 6 chart-height) "px' xmlns='http://www.w3.org/2000/svg'>"
         render-grid-vert-hours
         render-grid-vert-midnights
         render-current-hour-highlight
