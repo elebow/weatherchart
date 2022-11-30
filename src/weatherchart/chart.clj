@@ -89,7 +89,7 @@
 
 (defn render-chart
   [range-limits data-series]
-  (str "<svg viewBox='0 0 " (x-for-datetime weatherchart.data/latest-datetime) " " (+ 15 chart-height) "' height='400px' xmlns='http://www.w3.org/2000/svg'>"
+  (str "<svg viewBox='0 0 " (x-for-datetime weatherchart.data/latest-datetime) " " (+ 15 chart-height) "' height='" (* 8 chart-height) "px' xmlns='http://www.w3.org/2000/svg'>"
         render-grid-vert-hours
         render-grid-vert-midnights
         render-current-hour-highlight
