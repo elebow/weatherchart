@@ -25,7 +25,7 @@
   (let [response (clj-http.client/get "https://api.weather.gov/gridpoints/PHI/45,77" {:throw-exceptions false})]
     (if (clj-http.client/unexceptional-status? (:status response))
         (store-and-return-blob (:body response))
-        (assoc (retrieve-stored-blob) :error (str (:status response) " " (java.net.URLEncoder/encode (subs (:body response) 0 100)))))))
+        (assoc (retrieve-stored-blob) :error (str (:status response) " " (java.net.URLEncoder/encode (subs (:body response) 0 1000)))))))
 
 ;(def from-storage-timestamp (:from-storage-timestamp fetched-data))
 

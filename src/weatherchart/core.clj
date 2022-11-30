@@ -18,10 +18,8 @@
                   "</style>
                 </head>
                 <body>"
-                   (let [fetched-data weatherchart.data/fetched-data
-                         timestamp (:from-storage-timestamp fetched-data)
-                         error (:error fetched-data)]
-                        (if timestamp (str "Failed to fetch gridpoints. Using stored data from " timestamp " – " error)))
+                   (let [timestamp (:from-storage-timestamp weatherchart.data/fetched-data)]
+                        (if timestamp (str "Failed to fetch gridpoints. Using stored data from " timestamp)))
                   "<h2 class='chart-title'>weather conditions and hazards</h2>"
                   weatherchart.weatherconditions/render-elements
                   "<h2 class='chart-title'><span style='color:var(--color-temperature)'>temperature (°C)</span> and <span style='color:var(--color-apparent-temperature)'>apparent temperature (°C)</span></h2>"
@@ -39,6 +37,9 @@
                   (clojure.string/join ";" (map #(:attributes %) weatherchart.data/points-for-weather-layer))
                   "<br>hazards: "
                   (str (get-in weatherchart.data/gridpoint-data ["hazards" "values"]))
+
+                  (let [error (:error weatherchart.data/fetched-data)]
+                       (if error (str "<br>error from API:<br>" error)))
                 "</body></html>")))
 
 
