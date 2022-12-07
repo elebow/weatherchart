@@ -27,8 +27,6 @@
         (store-and-return-blob (:body response))
         (assoc (retrieve-stored-blob) :error (str (:status response) " " (java.net.URLEncoder/encode (subs (:body response) 0 1000)))))))
 
-;(def from-storage-timestamp (:from-storage-timestamp fetched-data))
-
 (def gridpoint-data
   ((json/read-str (:json fetched-data)) "properties"))
 
@@ -57,7 +55,7 @@
                        :attributes (value "attributes")))
              (get-in gridpoint-data ["weather" "values"]))
        (remove #(nil? (:weather %)))))
-(def points-for-hazards-layer [])
+(def points-for-hazards-layer []) ; TODO
 
 (def earliest-datetime (:datetime (first (points-for-layer "temperature"))))
 (def latest-datetime (:datetime (last (points-for-layer "temperature"))))
