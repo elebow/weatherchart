@@ -101,7 +101,7 @@ body {
 }
 
 .weathercondition-label {
-  font-size: 2.5pt;
+  font-size: 3pt;
 }
 @media (prefers-color-scheme: dark) {
   .weathercondition-label {

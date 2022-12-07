@@ -87,9 +87,12 @@
                                 (x-for-datetime end-of-current-hour) "," chart-height " "
                                 (x-for-datetime end-of-current-hour) ",0' class='current-hour-highlight' />")))
 
+(def chart-svg-attributes
+  (str "viewBox='0 -1 " (weatherchart.chart/x-for-datetime weatherchart.data/latest-datetime) " " (+ 15 weatherchart.chart/chart-height) "' height='" (* 6 weatherchart.chart/chart-height) "px'"))
+
 (defn render-chart
   [range-limits data-series]
-  (str "<svg viewBox='0 -1 " (x-for-datetime weatherchart.data/latest-datetime) " " (+ 8 chart-height) "' height='" (* 6 chart-height) "px' xmlns='http://www.w3.org/2000/svg'>"
+  (str "<svg " chart-svg-attributes "xmlns='http://www.w3.org/2000/svg'>"
         render-grid-vert-hours
         render-grid-vert-midnights
         render-current-hour-highlight
