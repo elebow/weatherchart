@@ -7,7 +7,7 @@
 ; See https://weather-gov.github.io/api/gridpoints for explanation of each layer
 
 (defn -main
-  []
+  [& args]
   (println (str
              "<html>
                 <head>

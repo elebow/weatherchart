@@ -22,7 +22,7 @@
   ;{:from-storage-timestamp (str (java-time.api/instant (.lastModified (clojure.java.io/file "gridpoints.json"))))
   ; :error "400 some error"
   ; :json (slurp "gridpoints.json")}) ; DEBUG
-  (let [response (clj-http.client/get "https://api.weather.gov/gridpoints/PHI/45,77" {:throw-exceptions false})]
+  (let [response (clj-http.client/get (str "https://api.weather.gov/gridpoints/" (first *command-line-args*)) {:throw-exceptions false})]
     (if (clj-http.client/unexceptional-status? (:status response))
         (store-and-return-blob (:body response))
         (assoc (retrieve-stored-blob) :error (str (:status response) " " (java.net.URLEncoder/encode (subs (:body response) 0 (min 1000 (.length (:body response))))))))))
