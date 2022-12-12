@@ -115,6 +115,10 @@ body {
   --color-relative-humidity: green;
   --color-probability-of-precipitation: blue;
   --color-quantitative-precipitation: darkgreen;
+  --color-snowfall-amount: purple;
+  --color-sky-cover: gray;
+  --color-wind-speed: goldenrod;
+  --color-wind-gust: peru;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -123,5 +127,9 @@ body {
     --color-relative-humidity: green;
     --color-probability-of-precipitation: deepskyblue;
     --color-quantitative-precipitation: forestgreen;
+    --color-snowfall-amount: purple;
+    --color-sky-cover: gray;
+    --color-wind-speed: goldenrod;
+    --color-wind-gust: peru;
   }
 }

@@ -29,8 +29,14 @@
                   (weatherchart.chart/render-chart {:min 0 :max 100 :step 10} [{:points (weatherchart.data/points-for-layer "relativeHumidity") :colorname "relative-humidity"}])
                   "<h2 class='chart-title' style='color:var(--color-probability-of-precipitation)'>probability of precipitation (%)</h2>"
                   (weatherchart.chart/render-chart {:min 0 :max 100 :step 10} [{:points (weatherchart.data/points-for-layer "probabilityOfPrecipitation") :colorname "probability-of-precipitation"}])
-                  "<h2 class='chart-title' style='color:var(--color-quantitative-precipitation)'>rain amount (mm)</h2>"
-                  (weatherchart.chart/render-chart {:min 0 :max 50 :step 10} [{:points (weatherchart.data/points-for-layer "quantitativePrecipitation") :colorname "quantitative-precipitation"}])
+                  "<h2 class='chart-title'><span style='color:var(--color-quantitative-precipitation)'>rain amount (mm)</span> and <span style='color:var(--color-snowfall-amount)'>snowfall ammount (mm)</span></h2>"
+                  (weatherchart.chart/render-chart {:min 0 :max 50 :step 10} [{:points (weatherchart.data/points-for-layer "snowfallAmount") :colorname "snowfall-amount"}
+                                                                              {:points (weatherchart.data/points-for-layer "quantitativePrecipitation") :colorname "quantitative-precipitation"}])
+                  "<h2 class='chart-title'><span style='color:var(--color-wind-speed)'>wind speed (km/h)</span> and <span style='color:var(--color-wind-gust)'>wind gust (km/h)</span></h2>"
+                  (weatherchart.chart/render-chart {:min 0 :max 100 :step 10} [{:points (weatherchart.data/points-for-layer "windGust") :colorname "wind-gust"}
+                                                                               {:points (weatherchart.data/points-for-layer "windSpeed") :colorname "wind-speed"}])
+                  "<h2 class='chart-title' style='color:var(--color-sky-cover)'>sky cover (%)</h2>"
+                  (weatherchart.chart/render-chart {:min 0 :max 100 :step 10} [{:points (weatherchart.data/points-for-layer "skyCover") :colorname "sky-cover"}])
 
                   ; Temporary display to aid development
                   "<br><br>debug:<br>weather attributes: "
@@ -47,8 +53,6 @@
 
 
 
-   ;"snowfallAmount" (mm)
-   ;"pressure"
-   ;"skyCover" (%)
-   ;"windSpeed" (km/h)
+   ;"pressure" ; no datapoints from API
+   ;"windDirection" (degree of angle)
    ;"hazards" ; non-numeric
