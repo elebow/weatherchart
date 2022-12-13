@@ -35,8 +35,8 @@
                     (weatherchart.chart/render-chart {:min 0 :max 50 :step 10} [{:points (weatherchart.data/points-for-layer "snowfallAmount") :colorname "snowfall-amount"}
                                                                                 {:points (weatherchart.data/points-for-layer "quantitativePrecipitation") :colorname "quantitative-precipitation"}])
                     "<h2 class='chart-title'><span style='color:var(--color-wind-speed)'>wind speed (km/h)</span> and <span style='color:var(--color-wind-gust)'>wind gust (km/h)</span></h2>"
-                    (weatherchart.chart/render-chart {:min 0 :max 100 :step 10} [{:points (weatherchart.data/points-for-layer "windGust") :colorname "wind-gust"}
-                                                                                 {:points (weatherchart.data/points-for-layer "windSpeed") :colorname "wind-speed"}])
+                    (weatherchart.chart/render-chart {:min 0 :max 50 :step 10} [{:points (weatherchart.data/points-for-layer "windGust") :colorname "wind-gust"}
+                                                                                {:points (weatherchart.data/points-for-layer "windSpeed") :colorname "wind-speed"}])
                     "<h2 class='chart-title' style='color:var(--color-sky-cover)'>sky cover (%)</h2>"
                     (weatherchart.chart/render-chart {:min 0 :max 100 :step 10} [{:points (weatherchart.data/points-for-layer "skyCover") :colorname "sky-cover"}])
 
