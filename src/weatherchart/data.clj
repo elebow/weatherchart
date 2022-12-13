@@ -3,6 +3,7 @@
   (:require [java-time.api])
   (:require [clj-http.client]))
 
+(def gridpoint-id (atom "default"))
 
 (defn store-and-return-blob
   "Store a blob on disk. Returns the blob."
@@ -18,17 +19,18 @@
   {:from-storage-timestamp (str (java-time.api/instant (.lastModified (clojure.java.io/file "/tmp/weatherchart-last-gridpoints.json"))))
    :json (slurp "/tmp/weatherchart-last-gridpoints.json")})
 
-(def fetched-data
+(defn fetched-data
+  []
   ;{:from-storage-timestamp (str (java-time.api/instant (.lastModified (clojure.java.io/file "gridpoints.json"))))
   ; :error "400 some error"
   ; :json (slurp "gridpoints.json")}) ; DEBUG
-  (let [response (clj-http.client/get (str "https://api.weather.gov/gridpoints/" (first *command-line-args*)) {:throw-exceptions false})]
+  (let [response (clj-http.client/get (str "https://api.weather.gov/gridpoints/" (deref gridpoint-id)) {:throw-exceptions false})]
     (if (clj-http.client/unexceptional-status? (:status response))
         (store-and-return-blob (:body response))
         (assoc (retrieve-stored-blob) :error (str (:status response) " " (java.net.URLEncoder/encode (subs (:body response) 0 (min 1000 (.length (:body response))))))))))
 
 (def gridpoint-data
-  ((json/read-str (:json fetched-data)) "properties"))
+  ((json/read-str (:json (fetched-data))) "properties"))
 
 (defn raw-to-datapoints
   "Return a hashmap (TODO make it a record) containing the datetime and value of the beginning and
