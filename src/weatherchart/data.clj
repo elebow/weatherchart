@@ -3,8 +3,6 @@
   (:require [java-time.api])
   (:require [clj-http.client]))
 
-(def gridpoint-id (atom "default"))
-
 (defn store-and-return-blob
   "Store a blob on disk. Returns the blob."
   [blob]
@@ -19,21 +17,17 @@
   {:from-storage-timestamp (str (java-time.api/instant (.lastModified (clojure.java.io/file "/tmp/weatherchart-last-gridpoints.json"))))
    :json (slurp "/tmp/weatherchart-last-gridpoints.json")})
 
-(defn fetched-data
-  []
+(def fetched-data
   ;{:from-storage-timestamp (str (java-time.api/instant (.lastModified (clojure.java.io/file "gridpoints.json"))))
   ; :error "400 some error"
   ; :json (slurp "gridpoints.json")}) ; DEBUG
-  (let [response (clj-http.client/get (str "https://api.weather.gov/gridpoints/" (deref gridpoint-id)) {:throw-exceptions false})]
+  (let [response (clj-http.client/get (str "https://api.weather.gov/gridpoints/" (System/getenv "WEATHERCHART_GRIDPOINT_ID")) {:throw-exceptions false})]
     (if (clj-http.client/unexceptional-status? (:status response))
         (store-and-return-blob (:body response))
         (assoc (retrieve-stored-blob) :error (str (:status response) " " (java.net.URLEncoder/encode (subs (:body response) 0 (min 1000 (.length (:body response))))))))))
 
-(def memoized-fetched-data (memoize fetched-data))
-
-(defn gridpoint-data
-  []
-  ((json/read-str (:json (memoized-fetched-data))) "properties"))
+(def gridpoint-data
+  ((json/read-str (:json fetched-data)) "properties"))
 
 (defn raw-to-datapoints
   "Return a hashmap (TODO make it a record) containing the datetime and value of the beginning and
@@ -46,7 +40,7 @@
 (defn points-for-layer
   [layer-name]
   (flatten (map #(raw-to-datapoints %)
-                (get-in (gridpoint-data) [layer-name "values"]))))
+                (get-in gridpoint-data [layer-name "values"]))))
 
 ; two irregular layers
 (def points-for-weather-layer
@@ -58,7 +52,7 @@
                        :weather (value "weather")
                        :intensity (value "intensity")
                        :attributes (value "attributes")))
-             (get-in (gridpoint-data) ["weather" "values"]))
+             (get-in gridpoint-data ["weather" "values"]))
        (remove #(nil? (:weather %)))))
 (def points-for-hazards-layer []) ; TODO
 
